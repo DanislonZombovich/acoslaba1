@@ -2,6 +2,7 @@
 setlocal enabledelayedexpansion
 
 set "TEST_DIR=test_env"
+set "CLEANUP_BAT=%~dp0..\src\cleanup.bat"
 
 echo ==========================================
 echo Запуск теста 1: Заполнение ниже порога
@@ -13,7 +14,7 @@ fsutil file createnew "%TEST_DIR%\log\file2.log" 209715200 >nul
 fsutil file createnew "%TEST_DIR%\log\file3.log" 209715200 >nul
 echo Создано файлов на 600 MB (требование >= 0.5 GB соблюдено)
 
-call cleanup.bat "%TEST_DIR%\log" 70 "%TEST_DIR%\backup" 1200
+call "%CLEANUP_BAT%" "%TEST_DIR%\log" 70 "%TEST_DIR%\backup" 1200
 
 for /f %%A in ('dir /b "%TEST_DIR%\backup" 2^>nul ^| find /c /v ""') do set "BCOUNT=%%A"
 if not "%BCOUNT%"=="0" (
@@ -40,7 +41,7 @@ timeout /t 2 /nobreak >nul
 fsutil file createnew "%TEST_DIR%\log\app_new.log" 314572800 >nul
 echo Создано файлов на 850 MB (требование >= 0.5 GB соблюдено)
 
-call cleanup.bat "%TEST_DIR%\log" 70 "%TEST_DIR%\backup" 1000
+call "%CLEANUP_BAT%" "%TEST_DIR%\log" 70 "%TEST_DIR%\backup" 1000
 
 if exist "%TEST_DIR%\log\app_old.log" (
     echo Ошибка: старый файл не был удален!
@@ -66,7 +67,7 @@ timeout /t 2 /nobreak >nul
 fsutil file createnew "%TEST_DIR%\log\log_4.log" 314572800 >nul
 echo Создано файлов на 900 MB (требование >= 0.5 GB соблюдено)
 
-call cleanup.bat "%TEST_DIR%\log" 60 "%TEST_DIR%\backup" 1000
+call "%CLEANUP_BAT%" "%TEST_DIR%\log" 60 "%TEST_DIR%\backup" 1000
 
 if exist "%TEST_DIR%\log\log_1.log" (
     echo Ошибка: log_1.log не удален!
@@ -93,7 +94,7 @@ fsutil file createnew "%TEST_DIR%\log\data_new.log" 629145600 >nul
 echo Создано файлов на 800 MB (требование >= 0.5 GB соблюдено)
 
 set "LAB1_MAX_COMPRESSION=1"
-call cleanup.bat "%TEST_DIR%\log" 70 "%TEST_DIR%\backup" 1000
+call "%CLEANUP_BAT%" "%TEST_DIR%\log" 70 "%TEST_DIR%\backup" 1000
 set "LAB1_MAX_COMPRESSION="
 
 if not exist "%TEST_DIR%\backup\*.tar.lzma" (

@@ -3,7 +3,7 @@
 set -e
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-CLEANUP_SCRIPT="$SCRIPT_DIR/cleanup.sh"
+CLEANUP_SCRIPT="$SCRIPT_DIR/../src/cleanup.sh"
 BASE_TEST_DIR="$SCRIPT_DIR/test_env"
 
 cleanup_env() {
